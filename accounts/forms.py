@@ -28,16 +28,9 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class SignUpForm(UserCreationForm):
-    USER_CHOICES = (
-        ('1', 'Bidder'),
-        ('2', 'Seller'),
-    )
 
     phone_number = forms.CharField(
         label='Phone Number', widget=forms.TextInput(attrs={'placeholder': 'Phone Number'}))
-
-    user_type = forms.ChoiceField(
-        choices=USER_CHOICES, label="Select User Type", initial='', widget=forms.Select(), required=True)
 
     class Meta:
         model = get_user_model()
