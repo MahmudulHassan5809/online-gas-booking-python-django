@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center lead font-weight-bold">{{title}}</h1>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'accounts:my_profile' %}" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{user_form|crispy}}
+                        {{profile_form|crispy}}
+
+                        <input type="submit" value="Update" class="btn btn-info btn-sm">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

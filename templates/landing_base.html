@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>
+    {% block title %}
+        GasBookingBd
+    {% endblock title %}
+  </title>
+
+  {% include 'partials/gas/_css.html' %}
+
+</head>
+
+<body class="bg-gradient-white">
+
+
+    {% include 'partials/landing/_landing_nav.html' %}
+
+  <div class="container">
+
+    {% include 'partials/_alert.html' %}
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+
+
+      {% block content %}
+
+      {% endblock content %}
+
+    </div>
+
+  </div>
+
+  {% include 'partials/gas/_js.html' %}
+
+</body>
+
+</html>

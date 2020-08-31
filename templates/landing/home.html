@@ -1,0 +1,46 @@
+{% extends "landing_base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+<div class="col-md-12 mt-2">
+    <div class="card">
+                <div class="crad-header">
+                    <h4 class="lead font-weight-bold text-center my-2">{{title}}</h4>
+
+                </div>
+                <div class="card-body">
+
+                        <div class="row">
+                            {% for product in product_list %}
+
+
+                                <div class="col-md-4">
+                                    <div class="card border-dark p-4">
+                                        <img src="{{product.product.image.url}}" class="figure-img img-fluid rounded">
+                                        <h5 class="lead font-weight-bold text-dark">{{product.product.title}}</h5>
+                                        <h5 class="lead font-weight-bold text-dark">Price {{product.product.min_price}}</h5>
+                                        <p class="text-dark font-weight-bold lead">
+                                            Auction Date : {{product.product.auction_date}} <br>
+                                            Auction Session : {{product.product.auction_session}} <br>
+                                            <a href="{% url 'auction:auction_details' product.product.id %}" class="btn btn-success">Details</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                        </div>
+
+                </div>
+    </div>
+    <div class="col-md-12 d-flex justify-content-center mt-3">
+        {% include 'partials/_paginate.html' %}
+    </div>
+</div>
+{% endblock content %}
