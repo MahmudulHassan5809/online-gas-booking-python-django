@@ -8,6 +8,7 @@ from gas.views import HomeView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('gas/', include('gas.urls', namespace='gas')),
     path('', HomeView.as_view(), name="home"),
 ]
 

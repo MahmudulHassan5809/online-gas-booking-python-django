@@ -12,9 +12,6 @@ from django.db.models.signals import post_save
 class User(AbstractUser):
     email = models.EmailField(unique=True)
 
-    def has_related_object(self):
-        return hasattr(self, 'user_payment_credit_card')
-
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = '1. User'
