@@ -16,9 +16,36 @@
                     <h1 class="text-center lead font-weight-bold">{{title}}</h1>
                 </div>
                 <div class="card-body">
+                    <table class="table table-inverse">
+                       <tbody class="text-center">
+                            <tr class="bg-danger text-white font-weight-bold">
+                                <td>Connection Number</td>
+                                <td>{{connection.connection_number}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Name</td>
+                                <td>{{connection.name}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Email</td>
+                                <td>{{connection.email}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Phone</td>
+                                <td>{{connection.mobile}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Address</td>
+                                <td>{{connection.address}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
+                    <a href="" class="btn btn-block btn-success">Book</a>
                 </div>
             </div>
+
+
         </div>
     </div>
 {% endblock content %}

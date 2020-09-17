@@ -46,6 +46,10 @@ class DetailConnectionView(SuccessMessageMixin, AictiveUserRequiredMixin, generi
     context_object_name = 'connection'
     template_name = 'connection/view_connection.html'
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(status='1')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.name
@@ -73,3 +77,19 @@ class UpdateConnectionView(SuccessMessageMixin, AictiveUserRequiredMixin, generi
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(UpdateConnectionView, self).form_valid(form)
+
+
+class ApprovedConnectionView(AictiveUserRequiredMixin, generic.ListView):
+    model = Connection
+    context_object_name = 'connection_list'
+    template_name = 'connection/approved_connection.html'
+
+    def get_queryset(self):
+        qs = Connection.objects.select_related('user').filter(status='1').only(
+            'connection_number', 'name', 'email', 'mobile', 'address', 'user__username')
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Approved Connection'
+        return context

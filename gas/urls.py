@@ -8,4 +8,7 @@ urlpatterns = [
          name="view_connection"),
     path('update-connection/<int:pk>/', views.UpdateConnectionView.as_view(),
          name="update_connection"),
+
+    path('user/approved-connection/<int:pk>/', views.ApprovedConnectionView.as_view(),
+         name="approved_connection"),
 ]

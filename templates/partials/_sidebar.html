@@ -39,6 +39,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             {% if user.user_connection %}
               <a class="collapse-item" href="{% url 'gas:update_connection' user.user_connection.id %}">Edit Connection</a>
+              <a class="collapse-item" href="{% url 'gas:approved_connection' user.user_connection.id %}">Go For Booking</a>
             {% else %}
               <a class="collapse-item" href="{% url 'gas:new_connection' %}">New Connection</a>
             {% endif %}

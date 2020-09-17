@@ -13,10 +13,11 @@ admin.site.register(Staff, StaffAdmin)
 
 
 class ConnectionAdmin(admin.ModelAdmin):
-    list_display = ['user','name','email', 'mobile', 'address','status']
-    search_fields = ('user__username', 'name','mobile')
+    list_display = ['user', 'name', 'email', 'mobile', 'address', 'status']
+    list_filter = ['status']
+    search_fields = ('user__username', 'name', 'mobile')
     autocomplete_fields = ('user',)
-    editable_fields = ['status']
+    list_editable = ['status']
 
 
 admin.site.register(Connection, ConnectionAdmin)
