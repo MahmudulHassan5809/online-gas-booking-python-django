@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header bg-danger text-white font-weight-bold">
+                    <h1 class="text-center lead font-weight-bold">{{title}}</h1>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'gas:booking_cylinder' connection_id %}" method="POST" novalidate enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+
+                        <button type="submit" class="btn btn-info btn-block">Book Cylinder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

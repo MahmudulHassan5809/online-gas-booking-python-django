@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import random
+from django.utils.crypto import get_random_string
 # Create your models here.
 
 
@@ -21,11 +22,11 @@ class Staff(models.Model):
         verbose_name_plural = '1. Delivery Staff'
 
     def __str__(self):
-        return self.name
+        return self.user.username
 
 
 def create_new_ref_number():
-    return str(random.randint(1000000000, 9999999999))
+    return get_random_string(8)
 
 
 class Connection(models.Model):
@@ -61,16 +62,22 @@ class Connection(models.Model):
         return reverse('gas:view_connection', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return self.name
+        return self.connection_number
+
+
+class GasReffiling(models.Model):
+    reffiling_size = models.CharField(max_length=50)
+    price = models.FloatField()
+
+    class Meta:
+        verbose_name = 'GasReffiling'
+        verbose_name_plural = '3.Gas Reffiling'
+
+    def __str__(self):
+        return self.reffiling_size
 
 
 class Booking(models.Model):
-    REFFILING_SIZE = (
-        ('14.2', '14.2 KG'),
-        ('5', '5 KG'),
-        ('3', '3 KG'),
-    )
-
     BOOKING_STATUS = (
         ('1', 'Confirmed'),
         ('2', 'On The Way'),
@@ -80,7 +87,7 @@ class Booking(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_bookings')
     connection = models.ForeignKey(Connection, on_delete=models.CASCADE)
-    reffeling_size = models.CharField(max_length=10, choices=REFFILING_SIZE)
+    reffiling = models.ForeignKey(GasReffiling, on_delete=models.CASCADE)
     booking_number = models.CharField(
         max_length=10,
         blank=True,
@@ -88,6 +95,15 @@ class Booking(models.Model):
         unique=True,
         default=create_new_ref_number()
     )
-    status = models.CharField(max_length=10, choices=BOOKING_STATUS)
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    date = models.DateField()
+    status = models.CharField(
+        max_length=10, choices=BOOKING_STATUS, null=True, blank=True)
+    staff = models.ForeignKey(
+        Staff, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField(auto_now_add=True, auto_now=False)
+
+    class Meta:
+        verbose_name = 'Booking'
+        verbose_name_plural = '4.Booking'
+
+    def __str__(self):
+        return self.booking_number

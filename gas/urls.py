@@ -11,4 +11,12 @@ urlpatterns = [
 
     path('user/approved-connection/<int:pk>/', views.ApprovedConnectionView.as_view(),
          name="approved_connection"),
+
+    path('book/cylinder/<int:connection_id>/',
+         views.BookingCylinderView.as_view(), name='booking_cylinder'),
+
+    path('booking/list/', views.BookingListView.as_view(), name='booking_list'),
+
+    path('booking/detail/<int:pk>/',
+         views.BookingDetailView.as_view(), name='booking_detail')
 ]

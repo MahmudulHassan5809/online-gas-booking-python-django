@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header bg-danger text-white font-weight-bold">
+                    <h1 class="text-center lead font-weight-bold">{{title}}</h1>
+                </div>
+                <div class="card-body p-0 mt-2">
+                    <div class="response-detail">
+                        <h3 class="text-center font-weight-bold lead bg-secondary text-white p-2">Response History</h3>
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Delivary Boy</th>
+                                    <th>Reffiling Cost</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{booking.staff.user.username}}</td>
+                                    <td>{{booking.reffiling.price}}</td>
+                                    <td>{{booking.get_status_display}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

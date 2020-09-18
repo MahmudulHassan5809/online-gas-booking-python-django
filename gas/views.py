@@ -5,8 +5,8 @@ from django.utils.timezone import now, localtime
 from accounts.mixins import AictiveUserRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
-from gas.models import Connection
-from gas.forms import ConnectionForm
+from gas.models import Connection, Booking
+from gas.forms import ConnectionForm, BookingForm
 from django.views import View, generic
 # Create your views here.
 
@@ -92,4 +92,58 @@ class ApprovedConnectionView(AictiveUserRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Approved Connection'
+        return context
+
+
+class BookingCylinderView(SuccessMessageMixin, AictiveUserRequiredMixin, generic.CreateView):
+    model = Booking
+    template_name = 'booking/booking_cylinder.html'
+    form_class = BookingForm
+    success_message = 'Cylinder Booked Successfully'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Booking Cylinder'
+        context['connection_id'] = self.kwargs.get('connection_id')
+        return context
+
+    def get_form_kwargs(self, **kwargs):
+        form_kwargs = super().get_form_kwargs(**kwargs)
+        form_kwargs["user"] = self.request.user
+        return form_kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('gas:booking_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.connection = get_object_or_404(
+            Connection, id=self.kwargs.get('connection_id'))
+        return super(BookingCylinderView, self).form_valid(form)
+
+
+class BookingListView(AictiveUserRequiredMixin, generic.ListView):
+    model = Booking
+    context_object_name = 'booking_list'
+    template_name = 'booking/booking_list.html'
+    form_class = BookingForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Booking List'
+        return context
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.select_related('connection').filter(user=self.request.user).only('connection__name', 'connection__mobile', 'connection__email')
+
+
+class BookingDetailView(AictiveUserRequiredMixin, generic.DetailView):
+    model = Booking
+    context_object_name = 'booking'
+    template_name = 'booking/booking_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Booking Detail'
         return context

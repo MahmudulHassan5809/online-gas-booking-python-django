@@ -1,6 +1,19 @@
 from django import forms
 from django.forms import FileInput
-from gas.models import Connection
+from gas.models import Connection, Booking, Staff
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+class StaffForm(forms.ModelForm):
+    class Meta:
+        model = Staff
+        fields = ('user', 'mobile', 'address')
+
+    def __init__(self, *args, **kwargs):
+        super(StaffForm, self).__init__(*args, **kwargs)
+        self.fields['user'].queryset = User.objects.filter(is_staff=True)
 
 
 class ConnectionForm(forms.ModelForm):
@@ -28,3 +41,20 @@ class ConnectionForm(forms.ModelForm):
         self.user = kwargs.pop('user', None)
         self.update = kwargs.pop('update', None)
         super(ConnectionForm, self).__init__(*args, **kwargs)
+
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ('reffiling',)
+
+    def clean(self):
+        check_user_connection = Connection.objects.filter(
+            user=self.user).first()
+        if check_user_connection.status != '1':
+            raise forms.ValidationError(
+                "Please Wait Your Connection Still Not Approved.")
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(BookingForm, self).__init__(*args, **kwargs)

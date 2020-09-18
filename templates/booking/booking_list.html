@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header bg-danger text-white font-weight-bold">
+                    <h1 class="text-center lead font-weight-bold">{{title}}</h1>
+                </div>
+                <div class="card-body">
+                     <table class="table table-inverse table-striped">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Booking Number</th>
+                                    <th>Name</th>
+                                    <th>Mobile Number</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in booking_list %}
+                                <tr>
+                                    <th>{{forloop.counter}}</th>
+                                    <th>{{booking.booking_number}}</th>
+                                    <th>{{booking.connection.name}}</th>
+                                    <th>{{booking.connection.mobile}}</th>
+                                    <th>{{booking.connection.email}}</th>
+                                    <th>{{booking.get_status_display}}</th>
+                                    <th>
+                                        <a href="{% url 'gas:booking_detail' booking.id %}" class="btn btn-danger btn-block">View</a>
+                                    </th>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
