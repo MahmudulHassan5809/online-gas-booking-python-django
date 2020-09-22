@@ -13,7 +13,14 @@ urlpatterns = [
     path('dashboard/', views.DashboardView.as_view(), name='dashboard_view'),
     path('my-profile/', views.MyProfileView.as_view(), name="my_profile"),
 
-
+    path('add-credit-card/', views.AddCreditCardView.as_view(),
+         name="add_credit_card"),
+    path('payment-details/', views.PaymentDetailsView.as_view(),
+         name="payment_details"),
+    path('edit-credit-card/<int:pk>/', views.EditCreditCardView.as_view(),
+         name="edit_credit_card"),
+    path('delete-credit-card/<int:pk>/', views.DeleteCreditCardView.as_view(),
+         name="delete_credit_card"),
 
     path('change-password/', views.ChangePasswordView.as_view(),
          name="change_password"),

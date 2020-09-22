@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import random
 from django.utils.crypto import get_random_string
+import uuid
 # Create your models here.
 
 
@@ -26,7 +27,7 @@ class Staff(models.Model):
 
 
 def create_new_ref_number():
-    return get_random_string(8)
+    return uuid.uuid4().hex[:11].upper()
 
 
 class Connection(models.Model):
@@ -43,7 +44,7 @@ class Connection(models.Model):
         blank=True,
         editable=False,
         unique=True,
-        default=create_new_ref_number()
+        default=uuid.uuid4
     )
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
@@ -93,7 +94,7 @@ class Booking(models.Model):
         blank=True,
         editable=False,
         unique=True,
-        default=create_new_ref_number()
+        default=uuid.uuid4
     )
     status = models.CharField(
         max_length=10, choices=BOOKING_STATUS, null=True, blank=True)

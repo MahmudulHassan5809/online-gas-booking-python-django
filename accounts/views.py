@@ -19,8 +19,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import PasswordChangeForm
 
-from accounts.forms import SignUpForm, UserForm, ProfileForm
-from accounts.models import Profile
+from accounts.forms import SignUpForm, UserForm, ProfileForm, PaymentCreditCardForm
+from accounts.models import Profile, PaymentCreditCard
 
 
 from django.views import View, generic
@@ -180,3 +180,63 @@ class UserDashboardView(AictiveUserRequiredMixin, View):
         }
 
         return render(request, 'accounts/user_dashboard.html', context)
+
+
+class PaymentDetailsView(AictiveUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        user_all_payment = PaymentCreditCard.objects.filter(
+            owner=request.user)
+        context = {
+            'title': 'Payment Details',
+            'user_all_payment': user_all_payment
+        }
+        return render(request, 'payment/payment_details.html', context)
+
+
+class AddCreditCardView(SuccessMessageMixin, AictiveUserRequiredMixin, generic.CreateView):
+    model = PaymentCreditCard
+    form_class = PaymentCreditCardForm
+    template_name = 'payment/add_credit_card.html'
+    success_message = 'Credit Card Added SuccessFully'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Add Credit Card'
+        return context
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(AddCreditCardView, self).form_valid(form)
+
+
+class EditCreditCardView(SuccessMessageMixin, AictiveUserRequiredMixin, generic.edit.UpdateView):
+    model = PaymentCreditCard
+    context_object_name = 'user_credit_card'
+    form_class = PaymentCreditCardForm
+    template_name = 'payment/edit_credit_card.html'
+    success_message = 'Credit Card Edit SuccessFully'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Edit Credit Card'
+        return context
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class DeleteCreditCardView(SuccessMessageMixin, AictiveUserRequiredMixin, generic.edit.DeleteView):
+    model = PaymentCreditCard
+    template_name = 'payment/delete_credit_card.html'
+    success_message = 'Credit Card Deleted SuccessFully'
+    success_url = reverse_lazy('accounts:payment_details')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Credit Card'
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteCreditCardView, self).delete(request, *args, **kwargs)

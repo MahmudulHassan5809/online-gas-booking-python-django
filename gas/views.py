@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 import datetime
 from django.utils.timezone import now, localtime
-from accounts.mixins import AictiveUserRequiredMixin
+from accounts.mixins import AictiveUserRequiredMixin, UserHasPaymentSystem
 from django.contrib.messages.views import SuccessMessageMixin
 
 from gas.models import Connection, Booking
@@ -95,7 +95,7 @@ class ApprovedConnectionView(AictiveUserRequiredMixin, generic.ListView):
         return context
 
 
-class BookingCylinderView(SuccessMessageMixin, AictiveUserRequiredMixin, generic.CreateView):
+class BookingCylinderView(UserHasPaymentSystem, SuccessMessageMixin, AictiveUserRequiredMixin, generic.CreateView):
     model = Booking
     template_name = 'booking/booking_cylinder.html'
     form_class = BookingForm

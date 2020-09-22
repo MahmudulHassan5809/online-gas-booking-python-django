@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="crad-header">
+                    <h4 class="lead font-weight-bold text-center my-2">{{title}}</h4>
+                    <div class="form-group text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><i class="text-muted fab fa-cc-visa fa-3x"></i></li>
+                            <li class="list-inline-item"><i class="fab fa-cc-mastercard fa-3x"></i></li>
+                            <li class="list-inline-item"><i class="fab fa-cc-amex fa-3x"></i></li>
+                            <li class="list-inline-item"><i class="fab fa-cc-discover fa-3x"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'accounts:edit_credit_card' user_credit_card.id %}" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{form|crispy}}
+
+                        <input type="submit" value="Save" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
