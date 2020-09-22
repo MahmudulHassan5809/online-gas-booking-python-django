@@ -77,6 +77,10 @@
           <div class="bg-white py-2 collapse-inner rounded">
             {% if user.user_connection %}
               <a class="collapse-item" href="{% url 'gas:booking_cylinder' user.user_connection.id %}">Book Cylinder</a>
+              <a class="collapse-item" href="{% url 'gas:booking_list'%}">All Booking</a>
+              <a class="collapse-item" href="{% url 'gas:booking_list'%}?type=confirm">Confirmed Booking</a>
+              <a class="collapse-item" href="{% url 'gas:booking_list'%}?type=on_the_way">On The Way Booking</a>
+              <a class="collapse-item" href="{% url 'gas:booking_list'%}?type=completed">Completed Booking</a>
             {% else %}
               <a class="collapse-item" href="{% url 'gas:new_connection' %}">New Connection</a>
             {% endif %}

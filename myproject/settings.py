@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     # Apps
     'accounts',
     'gas',
+    'settings',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -81,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'settings.context_processors.site_info',
             ],
         },
     },

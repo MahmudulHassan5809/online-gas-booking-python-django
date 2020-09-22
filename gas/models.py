@@ -75,7 +75,7 @@ class GasReffiling(models.Model):
         verbose_name_plural = '3.Gas Reffiling'
 
     def __str__(self):
-        return self.reffiling_size
+        return f"{self.reffiling_size} -->> {self.price}TK"
 
 
 class Booking(models.Model):

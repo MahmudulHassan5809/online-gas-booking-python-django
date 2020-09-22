@@ -31,17 +31,28 @@
                             <tbody>
                                 {% for booking in booking_list %}
                                 <tr>
-                                    <th>{{forloop.counter}}</th>
-                                    <th>{{booking.booking_number}}</th>
-                                    <th>{{booking.connection.name}}</th>
-                                    <th>{{booking.connection.mobile}}</th>
-                                    <th>{{booking.connection.email}}</th>
-                                    <th>{{booking.get_status_display}}</th>
-                                    <th>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{booking.booking_number}}</td>
+                                    <td>{{booking.connection.name}}</td>
+                                    <td>{{booking.connection.mobile}}</td>
+                                    <td>{{booking.connection.email}}</td>
+                                    <td>
+                                        {% if booking.status %}
+                                            {{booking.get_status_display}}
+                                        {% else %}
+                                            Pending
+                                        {% endif %}
+                                    </td>
+                                    <td>
                                         <a href="{% url 'gas:booking_detail' booking.id %}" class="btn btn-danger btn-block">View</a>
-                                    </th>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7">No Data Available</td>
                                 </tr>
                                 {% endfor %}
+
                             </tbody>
                         </table>
                 </div>

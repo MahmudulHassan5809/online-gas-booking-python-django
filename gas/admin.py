@@ -47,7 +47,7 @@ class BookingAdmin(admin.ModelAdmin):
     list_display = ['user', 'connection', 'address', 'mobile',
                     'reffiling', 'booking_number', 'status', 'staff', 'date']
     list_filter = ['status']
-    search_fields = ('user__username', 'name', 'mobile')
+    search_fields = ('user__username','connection__name','connection__mobile')
     autocomplete_fields = ('user', 'staff', 'connection')
     list_editable = ['status', 'staff']
 

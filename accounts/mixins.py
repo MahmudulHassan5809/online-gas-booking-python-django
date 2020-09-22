@@ -22,3 +22,13 @@ class UserHasPaymentSystem:
             messages.error(
                 request, ('Please Add Payment'))
             return redirect('accounts:add_credit_card')
+
+
+class UserHassApprovedConnection:
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.user_connection.status == '1':
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            messages.error(
+                request, ('Please Wait Untiill Your Connection Is Accepted'))
+            return redirect('gas:view_connection', request.user.user_connection.id)

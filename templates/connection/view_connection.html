@@ -22,6 +22,10 @@
                                 <td>Connection Number</td>
                                 <td>{{connection.connection_number}}</td>
                             </tr>
+                            <tr class="bg-success text-white font-weight-bold">
+                                <td>Connection Status</td>
+                                <td>{{connection.get_status_display}}</td>
+                            </tr>
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <td>Name</td>
                                 <td>{{connection.name}}</td>
@@ -41,7 +45,7 @@
                         </tbody>
                     </table>
 
-                    <a href="" class="btn btn-block btn-success">Book</a>
+                    <a href="{% url 'gas:booking_cylinder' connection.id %}" class="btn btn-block btn-success">Book</a>
                 </div>
             </div>
 

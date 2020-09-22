@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body p-0 mt-2">
                     <div class="response-detail">
-                        <h3 class="text-center font-weight-bold lead bg-secondary text-white p-2">Response History</h3>
+                        <h3 class="text-center font-weight-bold lead bg-secondary text-white p-2">Response Detail</h3>
 
                         <table class="table table-striped">
                             <thead>
@@ -35,6 +35,43 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="response-detail">
+                        <h3 class="text-center font-weight-bold lead bg-secondary text-white p-2">Booking Detail</h3>
+
+                       <table class="table table-inverse">
+                       <tbody class="text-center">
+                            <tr class="bg-danger text-white font-weight-bold">
+                                <td>Booking Number</td>
+                                <td>{{booking.booking_number}}</td>
+                            </tr>
+                            <tr class="bg-danger text-white font-weight-bold">
+                                <td>Connection Number</td>
+                                <td>{{booking.connection.connection_number}}</td>
+                            </tr>
+                            <tr class="bg-success text-white font-weight-bold">
+                                <td>Booking Status</td>
+                                <td>{{booking.get_status_display}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Name</td>
+                                <td>{{booking.connection.name}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Email</td>
+                                <td>{{booking.connection.email}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Phone</td>
+                                <td>{{booking.connection.mobile}}</td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>Address</td>
+                                <td>{{booking.connection.address}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </div>
 
                 </div>

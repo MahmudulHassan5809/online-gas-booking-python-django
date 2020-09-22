@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 import datetime
 from django.utils.timezone import now, localtime
-from accounts.mixins import AictiveUserRequiredMixin, UserHasPaymentSystem
+from accounts.mixins import AictiveUserRequiredMixin, UserHasPaymentSystem, UserHassApprovedConnection
 from django.contrib.messages.views import SuccessMessageMixin
 
 from gas.models import Connection, Booking
@@ -46,9 +46,9 @@ class DetailConnectionView(SuccessMessageMixin, AictiveUserRequiredMixin, generi
     context_object_name = 'connection'
     template_name = 'connection/view_connection.html'
 
-    def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.filter(status='1')
+    # def get_queryset(self):
+    #     qs = super().get_queryset()
+    #     return qs.filter(status='1')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -95,7 +95,7 @@ class ApprovedConnectionView(AictiveUserRequiredMixin, generic.ListView):
         return context
 
 
-class BookingCylinderView(UserHasPaymentSystem, SuccessMessageMixin, AictiveUserRequiredMixin, generic.CreateView):
+class BookingCylinderView(UserHasPaymentSystem, UserHassApprovedConnection, SuccessMessageMixin, AictiveUserRequiredMixin, generic.CreateView):
     model = Booking
     template_name = 'booking/booking_cylinder.html'
     form_class = BookingForm
@@ -135,7 +135,17 @@ class BookingListView(AictiveUserRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.select_related('connection').filter(user=self.request.user).only('connection__name', 'connection__mobile', 'connection__email')
+
+        if self.request.GET.get('type') == 'confirm':
+            return qs.select_related('connection', 'booking').filter(user=self.request.user, status='1')
+        elif self.request.GET.get('type') == 'on_the_way':
+
+            return qs.select_related('connection', 'booking').filter(user=self.request.user, status='2')
+        elif self.request.GET.get('type') == 'completed':
+
+            return qs.select_related('connection', 'booking').filter(user=self.request.user, status='3')
+
+        return qs.select_related('connection', 'booking').filter(user=self.request.user)
 
 
 class BookingDetailView(AictiveUserRequiredMixin, generic.DetailView):
