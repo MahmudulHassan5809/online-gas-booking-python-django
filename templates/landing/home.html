@@ -18,19 +18,21 @@
                 <div class="card-body">
 
                         <div class="row">
-                            {% for product in product_list %}
+                            {% for cylinder in cylinder_list %}
 
 
                                 <div class="col-md-4">
                                     <div class="card border-dark p-4">
-                                        <img src="{{product.product.image.url}}" class="figure-img img-fluid rounded">
-                                        <h5 class="lead font-weight-bold text-dark">{{product.product.title}}</h5>
-                                        <h5 class="lead font-weight-bold text-dark">Price {{product.product.min_price}}</h5>
-                                        <p class="text-dark font-weight-bold lead">
-                                            Auction Date : {{product.product.auction_date}} <br>
-                                            Auction Session : {{product.product.auction_session}} <br>
-                                            <a href="{% url 'auction:auction_details' product.product.id %}" class="btn btn-success">Details</a>
-                                        </p>
+                                        <img src="{{cylinder.image.url}}" class="figure-img img-fluid rounded">
+                                        <h5 class="lead font-weight-bold text-dark">{{cylinder.reffiling_size}}</h5>
+                                        <h5 class="lead font-weight-bold text-dark">Price {{cylinder.price}}</h5>
+
+                                        {% if user.is_authenticated and user.user_connection %}
+                                            <a href="{% url 'gas:booking_cylinder' user.user_connection.id %}" class="btn btn-primary btn-block">Book</a>
+                                        {% else %}
+                                            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-block">Login To Book</a>
+                                        {% endif %}
+
                                     </div>
                                 </div>
 

@@ -1,23 +1,23 @@
 from django.contrib import admin
-from .models import ApplicationInstruction, ApplicationInstructionList, SiteInfo, SiteFaq
+from .models import Instruction, InstructionList, SiteInfo, SiteFaq
 # Register your models here.
 
 
-class ApplicationInstructionListInline(admin.StackedInline):
-    model = ApplicationInstructionList
+class InstructionListInline(admin.StackedInline):
+    model = InstructionList
     extra = 0
 
 
-class ApplicationInstructionAdmin(admin.ModelAdmin):
+class InstructionAdmin(admin.ModelAdmin):
     list_display = ['title']
     search_fields = ('title',)
     list_per_page = 20
     inlines = [
-        ApplicationInstructionListInline
+        InstructionListInline
     ]
 
 
-admin.site.register(ApplicationInstruction, ApplicationInstructionAdmin)
+admin.site.register(Instruction, InstructionAdmin)
 
 
 class SiteInfoAdmin(admin.ModelAdmin):

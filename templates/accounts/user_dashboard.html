@@ -8,7 +8,96 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <p>Bidder Dashboard</p>
+        <div class="row">
+            <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Booking</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_booking}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Confirmed Booking</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{confirmed_booking}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">One The Way Booking</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{on_the_way_booking}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Completed Booking</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{completed_booking}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center text-dark font-weight-bold my-3 border-bottom">
+                <h3 class="text-dark font-weight-bold">Instruction</h3>
+            </div>
+            {% for instruction in instructions %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-center text-white font-weight-bold">
+                        <h4>{{instruction.title}}</h4>
+                    </div>
+                    <div class="card-body text-dark font-weight-bold p-0">
+                        <ul class="list-group">
+                            {% for item in instruction.instructions.all %}
+                            <li class="list-group-item list-group-flush">
+                            <i class="fas fa-check"></i>
+                            {{item.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock content %}

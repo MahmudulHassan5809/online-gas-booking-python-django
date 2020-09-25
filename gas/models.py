@@ -69,6 +69,7 @@ class Connection(models.Model):
 class GasReffiling(models.Model):
     reffiling_size = models.CharField(max_length=50)
     price = models.FloatField()
+    image = models.ImageField(upload_to='gas', null=True, blank=True)
 
     class Meta:
         verbose_name = 'GasReffiling'

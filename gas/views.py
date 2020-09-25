@@ -5,18 +5,21 @@ from django.utils.timezone import now, localtime
 from accounts.mixins import AictiveUserRequiredMixin, UserHasPaymentSystem, UserHassApprovedConnection
 from django.contrib.messages.views import SuccessMessageMixin
 
-from gas.models import Connection, Booking
+from gas.models import Connection, Booking, GasReffiling
 from gas.forms import ConnectionForm, BookingForm
 from django.views import View, generic
 # Create your views here.
 
 
-class HomeView(generic.TemplateView):
+class HomeView(generic.ListView):
+    model = GasReffiling
+    context_object_name = 'cylinder_list'
+    paginate_by = 10
     template_name = 'landing/home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Home'
+        context['title'] = 'Cylinder List'
         return context
 
 
@@ -137,15 +140,15 @@ class BookingListView(AictiveUserRequiredMixin, generic.ListView):
         qs = super().get_queryset()
 
         if self.request.GET.get('type') == 'confirm':
-            return qs.select_related('connection', 'booking').filter(user=self.request.user, status='1')
+            return qs.select_related('connection', 'reffiling').filter(user=self.request.user, status='1')
         elif self.request.GET.get('type') == 'on_the_way':
 
-            return qs.select_related('connection', 'booking').filter(user=self.request.user, status='2')
+            return qs.select_related('connection', 'reffiling').filter(user=self.request.user, status='2')
         elif self.request.GET.get('type') == 'completed':
 
-            return qs.select_related('connection', 'booking').filter(user=self.request.user, status='3')
+            return qs.select_related('connection', 'reffiling').filter(user=self.request.user, status='3')
 
-        return qs.select_related('connection', 'booking').filter(user=self.request.user)
+        return qs.select_related('connection', 'reffiling').filter(user=self.request.user)
 
 
 class BookingDetailView(AictiveUserRequiredMixin, generic.DetailView):

@@ -21,6 +21,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from accounts.forms import SignUpForm, UserForm, ProfileForm, PaymentCreditCardForm
 from accounts.models import Profile, PaymentCreditCard
+from gas.models import Booking
+from settings.models import Instruction
 
 
 from django.views import View, generic
@@ -173,10 +175,30 @@ class UserDashboardView(AictiveUserRequiredMixin, View):
         user_obj = request.user
         user_profile = user_obj.user_profile
 
+        total_booking = Booking.objects.select_related(
+            'connection', 'reffiling').filter(user=self.request.user).count()
+
+        confirmed_booking = Booking.objects.select_related(
+            'connection', 'reffiling').filter(user=self.request.user, status='1').count()
+
+        on_the_way_booking = Booking.objects.select_related(
+            'connection', 'reffiling').filter(user=self.request.user, status='2').count()
+
+        completed_booking = Booking.objects.select_related(
+            'connection', 'reffiling').filter(user=self.request.user, status='3').count()
+
+        instructions = Instruction.objects.prefetch_related(
+            'instructions').all()
+
         context = {
             'title': 'User Dashboard',
             'user_obj': user_obj,
             'user_profile': user_profile,
+            'total_booking': total_booking,
+            'confirmed_booking': confirmed_booking,
+            'on_the_way_booking': on_the_way_booking,
+            'completed_booking': completed_booking,
+            'instructions': instructions
         }
 
         return render(request, 'accounts/user_dashboard.html', context)
