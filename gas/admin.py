@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from gas.models import Staff, Connection, Booking, GasReffiling
+from gas.models import Staff, Connection, Booking, GasReffiling, Stock
 from gas.forms import StaffForm
 # Register your models here.
 
@@ -43,11 +43,21 @@ class GasReffilingAdmin(admin.ModelAdmin):
 admin.site.register(GasReffiling, GasReffilingAdmin)
 
 
+class StockAdmin(admin.ModelAdmin):
+    list_display = ['gas_reffiling', 'quantity']
+    list_editable = ['quantity']
+    list_per_page = 20
+
+
+admin.site.register(Stock, StockAdmin)
+
+
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['user', 'connection', 'address', 'mobile',
                     'reffiling', 'booking_number', 'status', 'staff', 'date']
     list_filter = ['status']
-    search_fields = ('user__username','connection__name','connection__mobile')
+    search_fields = ('user__username', 'connection__name',
+                     'connection__mobile')
     autocomplete_fields = ('user', 'staff', 'connection')
     list_editable = ['status', 'staff']
 

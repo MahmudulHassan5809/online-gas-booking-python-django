@@ -6,6 +6,8 @@ from django.dispatch import receiver
 import random
 from django.utils.crypto import get_random_string
 import uuid
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 
 
@@ -79,6 +81,15 @@ class GasReffiling(models.Model):
         return f"{self.reffiling_size} -->> {self.price}TK"
 
 
+class Stock(models.Model):
+    gas_reffiling = models.ForeignKey(GasReffiling, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        verbose_name = 'Stock'
+        verbose_name_plural = '4.Stock'
+
+
 class Booking(models.Model):
     BOOKING_STATUS = (
         ('1', 'Confirmed'),
@@ -105,7 +116,20 @@ class Booking(models.Model):
 
     class Meta:
         verbose_name = 'Booking'
-        verbose_name_plural = '4.Booking'
+        verbose_name_plural = '5.Booking'
 
     def __str__(self):
         return self.booking_number
+
+
+@receiver(post_save, sender=Booking)
+def update_stock(sender, instance, created, **kwargs):
+    stock_obj = Stock.objects.get(gas_reffiling=instance.reffiling)
+    stock_obj.quantity = stock_obj.quantity - 1
+    stock_obj.save()
+
+
+@receiver(post_save, sender=GasReffiling)
+def create_stock(sender, instance, created, **kwargs):
+    if created:
+        stock_obj = Stock.objects.create(gas_reffiling=instance)

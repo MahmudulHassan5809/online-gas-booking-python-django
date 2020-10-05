@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import FileInput
-from gas.models import Connection, Booking, Staff
+from gas.models import Connection, Booking, Staff, Stock
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -47,6 +47,14 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ('reffiling',)
+
+    def clean_reffiling(self):
+        reffiling = self.cleaned_data.get('reffiling')
+        stock_obj = Stock.objects.get(gas_reffiling_id=reffiling)
+        if stock_obj.quantity <= 0:
+            raise forms.ValidationError(
+                "Sorry This Cylinder Is Not Avialable Now.")
+        return reffiling
 
     def clean(self):
         check_user_connection = Connection.objects.filter(
