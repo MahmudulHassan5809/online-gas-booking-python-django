@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from gas.models import Staff, Connection, Booking, GasReffiling, Stock
 from gas.forms import StaffForm
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
 # Register your models here.
 
 
@@ -52,6 +54,12 @@ class StockAdmin(admin.ModelAdmin):
 admin.site.register(Stock, StockAdmin)
 
 
+def has_status_permission(request, obj=None):
+    if request.user.has_perm('booking.can_change_status'):
+        return True
+    return False
+
+
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['user', 'connection', 'address', 'mobile',
                     'reffiling', 'booking_number', 'status', 'staff', 'date']
@@ -66,6 +74,30 @@ class BookingAdmin(admin.ModelAdmin):
 
     def mobile(self, obj):
         return obj.connection.mobile
+
+    @method_decorator(csrf_protect)
+    def changelist_view(self, request, extra_context=None):
+        if request.user.is_superuser:
+            self.list_display = list_display = ['user', 'connection', 'address', 'mobile',
+                                                'reffiling', 'booking_number', 'status', 'staff', 'date']
+            self.editable = ['status', 'staff']
+            self.readonly_fields = ()
+        else:
+            self.list_display = ['user', 'connection', 'address', 'mobile',
+                                 'reffiling', 'booking_number', 'status', 'date']
+            self.editable = ['status']
+            self.readonly_fields = ('user', 'connection', 'address',
+                                    'mobile', 'reffiling', 'booking_number', 'staff', 'date')
+
+        return super(BookingAdmin, self).changelist_view(request, extra_context)
+
+    # def get_form(self, request, obj=None, **kwargs):
+    #     if not request.user.is_superuser:
+    #         self.fields = ['status']
+    #     else:
+    #         self.fields = ['user', 'connection', 'address', 'mobile',
+    #                        'reffiling', 'status', 'staff']
+    #     return super(BookingAdmin, self).get_form(request, obj, **kwargs)
 
 
 admin.site.register(Booking, BookingAdmin)

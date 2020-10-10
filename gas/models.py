@@ -118,6 +118,11 @@ class Booking(models.Model):
         verbose_name = 'Booking'
         verbose_name_plural = '5.Booking'
 
+    class Meta:
+         permissions = (
+             ("can_change_status", "Can Change Status"),
+         )
+
     def __str__(self):
         return self.booking_number
 
